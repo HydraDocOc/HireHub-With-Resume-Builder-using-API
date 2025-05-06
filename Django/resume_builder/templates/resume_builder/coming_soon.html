@@ -1,0 +1,71 @@
+{% extends 'resume_builder/base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow-lg">
+                <div class="card-body text-center p-5">
+                    <h1 class="display-4 mb-4">Coming Soon!</h1>
+                    <div class="coming-soon-icon mb-4">
+                        <i class="fas fa-file-pdf fa-4x text-primary"></i>
+                    </div>
+                    <p class="lead mb-4">
+                        We're working hard to bring you PDF downloads.
+                        This feature will be available soon!
+                    </p>
+                    <div class="d-flex justify-content-center gap-3">
+                        <a href="{% url 'resume_builder:preview_resume' resume.pk %}" class="btn btn-primary">
+                            <i class="fas fa-eye me-2"></i>Preview Resume
+                        </a>
+                        <a href="{% url 'resume_builder:dashboard' %}" class="btn btn-outline-secondary">
+                            <i class="fas fa-arrow-left me-2"></i>Back to Dashboard
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .card {
+        background-color: #f8f9fa;
+        border: none;
+        border-radius: 10px;
+        transition: transform 0.2s ease-in-out;
+    }
+    
+    .card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    }
+    
+    .coming-soon-icon {
+        animation: float 3s ease-in-out infinite;
+    }
+    
+    @keyframes float {
+        0% {
+            transform: translateY(0px);
+        }
+        50% {
+            transform: translateY(-10px);
+        }
+        100% {
+            transform: translateY(0px);
+        }
+    }
+    
+    .btn {
+        padding: 0.75rem 1.5rem;
+        border-radius: 5px;
+        transition: all 0.2s ease-in-out;
+    }
+    
+    .btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    }
+</style>
+{% endblock %} 

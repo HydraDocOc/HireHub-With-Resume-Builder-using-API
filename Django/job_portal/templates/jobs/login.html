@@ -1,0 +1,26 @@
+{% extends "jobs/base.html" %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+<div class="auth-page">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <h2 class="card-title text-center mb-4">Login</h2>
+                    <form method="POST" action="{% url 'job_portal:login' %}">
+                        {% csrf_token %}
+                        {{ form|crispy }}
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-primary">Login</button>
+                        </div>
+                    </form>
+                    <p class="text-center mt-3">
+                        Don't have an account? <a href="{% url 'job_portal:register' %}">Register here</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

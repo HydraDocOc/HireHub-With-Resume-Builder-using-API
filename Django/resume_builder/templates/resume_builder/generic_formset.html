@@ -1,0 +1,185 @@
+{% extends 'resume_builder/base.html' %}
+{% load static %}
+
+{% block title %}Edit {{ section_title }} - Resume Builder{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-md-8">
+        <h1 class="mb-3 text-muted">{{ section_title }}</h1>
+        <p class="text-muted">{{ section_description }}</p>
+    </div>
+    <div class="col-md-4 text-end">
+        <a href="{% url 'resume_builder:preview_resume' pk=resume.pk %}" class="btn btn-outline-primary">
+            <i class="fas fa-eye"></i> Preview Resume
+        </a>
+    </div>
+</div>
+
+{% if messages %}
+    {% for message in messages %}
+    <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+        {{ message }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    {% endfor %}
+{% endif %}
+
+<div class="row">
+    <div class="col-lg-3">
+        {% include 'resume_builder/includes/resume_nav.html' with active_step=active_step %}
+    </div>
+    
+    <div class="col-lg-9">
+        <div class="card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5 class="mb-0 text-muted">{{ section_title }}</h5>
+                <button type="button" id="add-form-btn" class="btn btn-success btn-sm">
+                    <i class="fas fa-plus me-1"></i> Add {{ item_name }}
+                </button>
+            </div>
+            <div class="card-body">
+                <form method="post">
+                    {% csrf_token %}
+                    {{ formset.management_form }}
+                    
+                    <div class="formset-container">
+                        {% for form in formset %}
+                            {% if not form.instance.pk or not form.DELETE.value %}
+                            <div class="formset-item mb-4 p-3" style="background-color: var(--input-bg); border: 1px solid var(--input-border); border-radius: var(--card-border-radius);">
+                                <div class="d-flex justify-content-between align-items-center mb-3">
+                                    <h6 class="mb-0 text-muted">{{ item_name }} #{{ forloop.counter }}</h6>
+                                    {% if formset.can_delete %}
+                                        <button type="button" class="btn btn-sm btn-link text-danger delete-form-btn">
+                                            <i class="fas fa-trash-alt"></i> Remove
+                                        </button>
+                                        {{ form.DELETE }}
+                                    {% endif %}
+                                </div>
+                                
+                                {{ form.id }}
+                                {{ form.non_field_errors }}
+                                
+                                {% block form_fields %}
+                                <!-- Form fields will be overridden by child templates -->
+                                {% endblock %}
+                            </div>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                    
+                    <!-- Empty form template for JavaScript -->
+                    <div id="empty-form" class="d-none formset-item mb-4 p-3" style="background-color: var(--input-bg); border: 1px solid var(--input-border); border-radius: var(--card-border-radius);">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <h6 class="mb-0 text-muted">New {{ item_name }}</h6>
+                            <button type="button" class="btn btn-sm btn-link text-danger delete-form-btn">
+                                <i class="fas fa-trash-alt"></i> Remove
+                            </button>
+                        </div>
+                        
+                        {{ formset.empty_form.id }}
+                        {{ formset.empty_form.non_field_errors }}
+                        
+                        {% block empty_form_fields %}
+                        <!-- Empty form fields will be overridden by child templates -->
+                        {% endblock %}
+                        
+                        {{ formset.empty_form.DELETE }}
+                    </div>
+                    
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-primary">Save and Continue</button>
+                        {% if prev_url %}
+                        <a href="{{ prev_url }}" class="btn btn-outline-secondary">
+                            <i class="fas fa-arrow-left"></i> Previous: {{ prev_title }}
+                        </a>
+                        {% endif %}
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Initialize formset handling
+        const formsetContainer = document.querySelector('.formset-container');
+        const addFormBtn = document.getElementById('add-form-btn');
+        const totalFormsInput = document.querySelector('input[name$="-TOTAL_FORMS"]');
+        
+        // Add new form function
+        addFormBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            
+            // Get current form count
+            const formCount = parseInt(totalFormsInput.value);
+            
+            // Clone the empty form template
+            const emptyFormElement = document.getElementById('empty-form').cloneNode(true);
+            emptyFormElement.id = '';
+            emptyFormElement.classList.remove('d-none');
+            
+            // Update form index
+            emptyFormElement.innerHTML = emptyFormElement.innerHTML.replace(/__prefix__/g, formCount);
+            
+            // Add the new form to the container
+            formsetContainer.appendChild(emptyFormElement);
+            
+            // Update total form count
+            totalFormsInput.value = formCount + 1;
+            
+            // Re-bind any special handlers
+            initFormWidgets();
+            
+            // Re-bind delete buttons
+            bindDeleteButtons();
+        });
+        
+        // Check if we have any visible forms, if not, add one
+        function checkEmptyFormset() {
+            const visibleForms = formsetContainer.querySelectorAll('.formset-item:not(.d-none)');
+            if (visibleForms.length === 0) {
+                addFormBtn.click();
+            }
+        }
+        
+        // Initialize form widgets (datepickers, etc)
+        function initFormWidgets() {
+            // Override in specific templates if needed
+            {% block init_widgets %}{% endblock %}
+        }
+        
+        // Bind delete buttons
+        function bindDeleteButtons() {
+            document.querySelectorAll('.delete-form-btn').forEach(btn => {
+                btn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    const formItem = this.closest('.formset-item');
+                    const deleteInput = formItem.querySelector('input[name$="-DELETE"]');
+                    
+                    if (deleteInput) {
+                        // Mark for deletion and hide
+                        deleteInput.value = 'on';
+                        formItem.classList.add('d-none');
+                    } else {
+                        // If it's a new unsaved form, just remove it from DOM
+                        formItem.remove();
+                    }
+                    
+                    // Check if we removed all forms
+                    checkEmptyFormset();
+                });
+            });
+        }
+        
+        // Run initialization functions
+        initFormWidgets();
+        bindDeleteButtons();
+        checkEmptyFormset();
+    });
+</script>
+{% endblock %}

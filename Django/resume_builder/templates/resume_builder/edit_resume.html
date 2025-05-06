@@ -1,0 +1,154 @@
+{% extends 'resume_builder/base.html' %}
+{% load static %}
+
+{% block title %}Edit Resume Details - Resume Builder{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-md-8">
+        <h1 class="mb-3">Edit Resume Details</h1>
+        <p class="text-light">Customize your resume title and template</p>
+    </div>
+    <div class="col-md-4 text-end">
+        <a href="{% url 'resume_builder:dashboard' %}" class="btn btn-outline-secondary">
+            <i class="fas fa-arrow-left me-1"></i> Back to Dashboard
+        </a>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-3">
+        {% include 'resume_builder/includes/resume_nav.html' %}
+    </div>
+    
+    <div class="col-lg-9">
+        <div class="card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5 class="mb-0 text-light">Resume Information</h5>
+            </div>
+            <div class="card-body">
+                <form method="post">
+                    {% csrf_token %}
+                    
+                    <div id="form-container">
+                        <div class="resume-form mb-4 p-3" style="background-color: var(--input-bg); border: 1px solid var(--input-border); border-radius: var(--card-border-radius);">
+                            <div class="row mb-3">
+                                <div class="col-md-12">
+                                    <label for="{{ form.title.id_for_label }}" class="form-label">Resume Title</label>
+                                    {{ form.title.errors }}
+                                    <input type="text" name="{{ form.title.name }}" id="{{ form.title.id_for_label }}" class="form-control" value="{{ form.title.value|default:'' }}" required>
+                                    <div class="form-text text-light">A brief title for your resume (e.g., "Software Developer Resume", "Marketing Professional")</div>
+                                </div>
+                            </div>
+                            
+                            <div class="row mb-3">
+                                <div class="col-md-12">
+                                    <label for="{{ form.template.id_for_label }}" class="form-label">Resume Template</label>
+                                    {{ form.template.errors }}
+                                    <select name="{{ form.template.name }}" id="{{ form.template.id_for_label }}" class="form-select">
+                                        {% for value, label in form.template.field.choices %}
+                                        <option value="{{ value }}" {% if form.template.value == value %}selected{% endif %}>{{ label }}</option>
+                                        {% endfor %}
+                                    </select>
+                                    <div class="form-text text-light">Choose a template design for your resume.</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="template-preview-container mb-4">
+                        <h5 class="mb-3 text-light">Template Preview</h5>
+                        <div class="row template-gallery">
+                            {% for value, text in form.template.field.choices %}
+                            <div class="col-md-4 mb-3">
+                                <div class="card template-card h-100 {% if form.template.value == value %}border-primary shadow{% endif %}" data-template="{{ value }}" style="cursor: pointer; transition: all 0.3s ease;">
+                                    <div class="card-body text-center p-2">
+                                        <div class="template-preview-img mb-2" style="height: 200px; background-color: var(--input-bg); border-radius: 4px; display: flex; align-items: center; justify-content: center;">
+                                            {% with 'resume_builder/img/templates_'|add:value|add:'.png' as template_image %}
+                                            <img src="{% static template_image %}" 
+                                                 alt="{{ text }} Template" 
+                                                 class="img-fluid h-100 w-100 object-fit-contain"
+                                                 onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
+                                                 style="border-radius: 4px; object-fit: contain;">
+                                            <div class="template-preview-placeholder" style="display: none; height: 100%; width: 100%; flex-direction: column; align-items: center; justify-content: center; color: var(--text-muted);">
+                                                <i class="fas fa-file-alt fa-3x mb-2"></i>
+                                                <span>{{ text }}</span>
+                                            </div>
+                                            {% endwith %}
+                                        </div>
+                                        <h6 class="text-light mb-0">{{ text }}</h6>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-primary">Save Changes</button>
+                        <a href="{% url 'resume_builder:edit_education' resume.pk %}" class="btn btn-outline-secondary">Continue to Education</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+        
+        <div class="card mt-4">
+            <div class="card-header">
+                <h5 class="mb-0 text-light">Resume Actions</h5>
+            </div>
+            <div class="card-body">
+                <div class="d-grid gap-2">
+                    <a href="{% url 'resume_builder:preview_resume' resume.pk %}" class="btn btn-success">
+                        <i class="fas fa-eye me-2"></i> Preview Resume
+                    </a>
+                    <a href="{% url 'resume_builder:download_resume' resume.pk %}" class="btn btn-primary">
+                        <i class="fas fa-download me-2"></i> Download PDF
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% block extra_js %}
+<script src="{% static 'resume_builder/js/resume_builder.js' %}"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const templateSelect = document.getElementById('{{ form.template.id_for_label }}');
+    const templateCards = document.querySelectorAll('.template-card');
+    
+    // Highlight the selected template
+    function highlightSelectedTemplate() {
+        const selectedValue = templateSelect.value;
+        templateCards.forEach(card => {
+            if (card.dataset.template === selectedValue) {
+                card.classList.add('border-primary');
+                card.classList.add('shadow');
+            } else {
+                card.classList.remove('border-primary');
+                card.classList.remove('shadow');
+            }
+        });
+    }
+    
+    // Initialize
+    highlightSelectedTemplate();
+    
+    // Update when select changes
+    templateSelect.addEventListener('change', highlightSelectedTemplate);
+    
+    // Update select when template card is clicked
+    templateCards.forEach(card => {
+        card.addEventListener('click', function() {
+            templateSelect.value = card.dataset.template;
+            highlightSelectedTemplate();
+            // Trigger change event to activate any listeners
+            const event = new Event('change');
+            templateSelect.dispatchEvent(event);
+        });
+    });
+});
+</script>
+{% endblock %}
+
+{% endblock %}

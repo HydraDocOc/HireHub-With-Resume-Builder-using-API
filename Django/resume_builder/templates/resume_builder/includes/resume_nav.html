@@ -1,0 +1,66 @@
+<!-- Resume navigation sidebar -->
+<div class="resume-nav">
+    <div class="p-3">
+        <h5 class="mb-3">Resume Progress</h5>
+        <div class="progress mb-3">
+            <div class="progress-bar" role="progressbar" style="width: {{ resume.get_completion_percentage }}%;" 
+                 aria-valuenow="{{ resume.get_completion_percentage }}" aria-valuemin="0" aria-valuemax="100">
+                {{ resume.get_completion_percentage }}%
+            </div>
+        </div>
+    </div>
+    
+    <div class="list-group list-group-flush">
+        <a href="{% url 'resume_builder:edit_resume' pk=resume.pk %}" 
+           class="list-group-item list-group-item-action {% if active_step == 'resume' %}active{% endif %}">
+            <i class="fas fa-file-alt me-2"></i> Resume Details
+        </a>
+        
+        <a href="{% url 'resume_builder:edit_personal_info' pk=resume.pk %}" 
+           class="list-group-item list-group-item-action {% if active_step == 'personal_info' %}active{% endif %}">
+            <i class="fas fa-user me-2"></i> Personal Information
+        </a>
+        
+        <a href="{% url 'resume_builder:edit_education' pk=resume.pk %}" 
+           class="list-group-item list-group-item-action {% if active_step == 'education' %}active{% endif %}">
+            <i class="fas fa-graduation-cap me-2"></i> Education
+        </a>
+        
+        <a href="{% url 'resume_builder:edit_experience' pk=resume.pk %}" 
+           class="list-group-item list-group-item-action {% if active_step == 'experience' %}active{% endif %}">
+            <i class="fas fa-briefcase me-2"></i> Experience
+        </a>
+        
+        <a href="{% url 'resume_builder:edit_skills' pk=resume.pk %}" 
+           class="list-group-item list-group-item-action {% if active_step == 'skills' %}active{% endif %}">
+            <i class="fas fa-tools me-2"></i> Skills
+        </a>
+        
+        <a href="{% url 'resume_builder:edit_projects' pk=resume.pk %}" 
+           class="list-group-item list-group-item-action {% if active_step == 'projects' %}active{% endif %}">
+            <i class="fas fa-project-diagram me-2"></i> Projects
+        </a>
+        
+        <a href="{% url 'resume_builder:edit_certificates' pk=resume.pk %}" 
+           class="list-group-item list-group-item-action {% if active_step == 'certificates' %}active{% endif %}">
+            <i class="fas fa-certificate me-2"></i> Certificates
+        </a>
+        
+        <a href="{% url 'resume_builder:edit_languages' pk=resume.pk %}" 
+           class="list-group-item list-group-item-action {% if active_step == 'languages' %}active{% endif %}">
+            <i class="fas fa-language me-2"></i> Languages
+        </a>
+    </div>
+    
+    <div class="p-3">
+        <div class="d-grid gap-2">
+            <a href="{% url 'resume_builder:preview_resume' pk=resume.pk %}" class="btn btn-success">
+                <i class="fas fa-eye me-2"></i> Preview Resume
+            </a>
+            
+            <a href="{% url 'resume_builder:download_resume' pk=resume.pk %}" class="btn btn-primary">
+                <i class="fas fa-download me-2"></i> Download PDF
+            </a>
+        </div>
+    </div>
+</div>

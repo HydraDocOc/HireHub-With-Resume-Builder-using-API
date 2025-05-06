@@ -1,0 +1,73 @@
+{% extends "jobs/base.html" %}
+{% load static %}
+
+{% block content %}
+
+<section class="mb-4">
+    <div id="jobCarousel" class="carousel slide" data-bs-ride="carousel">
+        <div class="carousel-indicators">
+            <button type="button" data-bs-target="#jobCarousel" data-bs-slide-to="0" class="active"></button>
+            <button type="button" data-bs-target="#jobCarousel" data-bs-slide-to="1"></button>
+            <button type="button" data-bs-target="#jobCarousel" data-bs-slide-to="2"></button>
+        </div>
+        <div class="carousel-inner rounded">
+            <div class="carousel-item active">
+                <div class="bg-primary bg-gradient p-5 text-center text-white">
+                    <h2>Find Your Dream Job</h2>
+                    <p class="lead">Thousands of jobs from top companies</p>
+                </div>
+            </div>
+            <div class="carousel-item">
+                <div class="bg-success bg-gradient p-5 text-center text-white">
+                    <h2>Remote Opportunities</h2>
+                    <p class="lead">Work from anywhere in the world</p>
+                </div>
+            </div>
+            <div class="carousel-item">
+                <div class="bg-info bg-gradient p-5 text-center text-white">
+                    <h2>Tech Jobs</h2>
+                    <p class="lead">Latest opportunities in technology</p>
+                </div>
+            </div>
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#jobCarousel" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon"></span>
+            <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#jobCarousel" data-bs-slide="next">
+            <span class="carousel-control-next-icon"></span>
+            <span class="visually-hidden">Next</span>
+        </button>
+    </div>
+</section>
+
+<section class="search-form mt-5">
+    <h2 class="mb-4">Find Your Dream Job</h2>
+    <form action="{% url 'job_portal:search_jobs' %}" method="GET">
+        <div class="search-input-group">
+            <div class="flex-grow-1">
+                <input type="text" class="form-control" placeholder="Job title or keyword" name="keyword" 
+                       value="{{ search_keyword|default:'' }}">
+            </div>
+            <div class="flex-grow-1">
+                <input type="text" class="form-control" placeholder="Location" name="location"
+                       value="{{ search_location|default:'' }}">
+            </div>
+            <div>
+                <button type="submit" class="btn btn-primary">
+                    <span class="material-symbols-outlined">search</span>
+                </button>
+            </div>
+        </div>
+    </form>
+</section>
+
+<div class="container mt-4">
+    {% include 'jobs/_jobs_list.html' %}
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script src="{% static 'jobs/js/search.js' %}"></script>
+{% endblock %}

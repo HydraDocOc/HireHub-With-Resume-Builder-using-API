@@ -1,0 +1,172 @@
+
+.template-card {
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+    height: 100%;
+    border: 2px solid transparent;
+}
+
+.template-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.template-card.active {
+    border: 2px solid #0d6efd;
+}
+
+.template-gallery img {
+    max-height: 200px;
+    object-fit: cover;
+}
+
+.template-preview {
+    max-height: 250px;
+    border: 1px solid #ddd;
+}
+
+/* Resume Dashboard Cards */
+.resume-dashboard-card {
+    transition: all 0.2s ease-in-out;
+}
+
+.resume-dashboard-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* Form Styling */
+.form-section {
+    background-color: #f8f9fa;
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+.formset-item {
+    background-color: white;
+    border-radius: 5px;
+    padding: 15px;
+    margin-bottom: 15px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+}
+
+.remove-form-btn {
+    color: #dc3545;
+}
+
+/* Resume Navigation */
+.resume-nav {
+    background-color: #f8f9fa;
+    border-radius: 5px;
+    margin-bottom: 20px;
+    position: sticky;
+    left: 20px;
+}
+
+.resume-nav .nav-link {
+    color: #495057;
+    padding: 10px 15px;
+}
+
+.resume-nav .nav-link.active {
+    background-color: #007bff;
+    color: white;
+    border-radius: 5px;
+}
+
+.resume-nav .nav-link:hover:not(.active) {
+    background-color: #e9ecef;
+    border-radius: 5px;
+}
+
+/* Resume Preview */
+.preview-container {
+    background-color: white;
+    padding: 20px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}   
+
+.preview-frame {
+    width: 100%;
+    height: 800px;
+    border: 1px solid #dee2e6;
+}
+
+/* PDF Download Button */
+.download-btn {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    z-index: 999;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Preview Navigation Buttons */
+.preview-nav-buttons {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    display: flex;
+    flex-direction: column;
+    z-index: 1000;
+}
+
+.preview-nav-buttons .btn {
+    margin-bottom: 10px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+/* Resume Edit Layout */
+.resume-edit-container {
+    display: flex;
+    flex-direction: column;
+}
+
+@media (min-width: 992px) {
+    .resume-edit-container {
+        flex-direction: row;
+    }
+    
+    .resume-nav-container {
+        flex: 0 0 250px;
+        margin-right: 20px;
+    }
+    
+    .resume-content-container {
+        flex: 1;
+    }
+}
+
+/* Print Styles */
+@media print {
+    .print-hide {
+        display: none !important;
+    }
+    
+    .preview-nav-buttons {
+        display: none !important;
+    }
+    
+    .download-btn {
+        display: none !important;
+    }
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .resume-nav {
+        position: static;
+    }
+    
+    .preview-frame {
+        height: 600px;
+    }
+    
+    .download-btn {
+        position: static;
+        margin-top: 20px;
+        margin-bottom: 20px;
+        width: 100%;
+    }
+}

@@ -1,0 +1,122 @@
+{% extends 'resume_builder/base.html' %}
+{% load static %}
+
+{% block title %}Resume Builder Dashboard{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-md-8">
+        <h1 class="mb-3">Resume Dashboard</h1>
+        <p class="text-muted">Manage your resumes for job applications</p>
+    </div>
+    <div class="col-md-4 text-end">
+        <a href="{% url 'resume_builder:create_resume' %}" class="btn btn-primary">
+            <i class="fas fa-plus-circle me-1"></i> Create New Resume
+        </a>
+    </div>
+</div>
+
+{% if messages %}
+<div class="row mb-4">
+    <div class="col-md-12">
+        {% for message in messages %}
+        <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endif %}
+
+{% if resumes %}
+<div class="row">
+    {% for resume in resumes %}
+    <div class="col-md-4 mb-4">
+        <div class="card h-100 resume-dashboard-card">
+            <div class="card-header bg-dark">
+                <h5 class="card-title mb-0">{{ resume.title }}</h5>
+            </div>
+            <div class="card-body">
+                <p class="text-muted small text-light">Template: {{ resume.get_template_display }}</p>
+                
+                <div class="mb-3">
+                    <div class="d-flex justify-content-between">
+                        <span class="small">Completion:</span>
+                        <span class="small">{{ resume.get_completion_percentage }}%</span>
+                    </div>
+                    <div class="progress" style="height: 8px;">
+                        <div class="progress-bar bg-success" role="progressbar" style="width: {{ resume.get_completion_percentage }}%" aria-valuenow="{{ resume.get_completion_percentage }}" aria-valuemin="0" aria-valuemax="100"></div>
+                    </div>
+                </div>
+                
+                <p class="card-text small">
+                    <i class="fas fa-clock me-1"></i> Last updated: {{ resume.updated_at|date:"M d, Y" }}
+                </p>
+            </div>
+            <div class="card-footer bg-dark">
+                <div class="d-flex justify-content-between">
+                    <a href="{% url 'resume_builder:edit_resume' resume.pk %}" class="btn btn-sm btn-outline-primary">
+                        <i class="fas fa-edit me-1"></i> Edit
+                    </a>
+                    <a href="{% url 'resume_builder:preview_resume' resume.pk %}" class="btn btn-sm btn-outline-secondary">
+                        <i class="fas fa-eye me-1"></i> Preview
+                    </a>
+                    <a href="{% url 'resume_builder:delete_resume' resume.pk %}" class="btn btn-sm btn-outline-danger">
+                        <i class="fas fa-trash me-1"></i> Delete
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% else %}
+<div class="row">
+    <div class="col-md-12">
+        <div class="card mb-4">
+            <div class="card-body text-center py-5">
+                <i class="fas fa-file-alt fa-3x text-muted mb-3"></i>
+                <h3>No Resumes Yet</h3>
+                <p class="text-muted">Create your first resume to get started</p>
+                <a href="{% url 'resume_builder:create_resume' %}" class="btn btn-primary">
+                    <i class="fas fa-plus-circle me-1"></i> Create New Resume
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+
+<div class="row mt-4">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header bg-dark">
+                <h5 class="mb-0">Resume Building Tips</h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="mb-3">
+                            <h6><i class="fas fa-check-circle text-success me-2"></i> Keep it concise</h6>
+                            <p class="text-muted small">Aim for 1-2 pages maximum. Focus on relevant experiences and achievements.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="mb-3">
+                            <h6><i class="fas fa-check-circle text-success me-2"></i> Tailor for each job</h6>
+                            <p class="text-muted small">Create different versions of your resume tailored to specific job descriptions.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="mb-3">
+                            <h6><i class="fas fa-check-circle text-success me-2"></i> Highlight achievements</h6>
+                            <p class="text-muted small">Use specific numbers and metrics to demonstrate your impact.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

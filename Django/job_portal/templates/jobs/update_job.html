@@ -1,0 +1,96 @@
+{% extends "jobs/base.html" %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+<div class="post-job-page">
+    <h1 class="mb-4">Update Job</h1>
+    <div class="card">
+        <div class="card-body">
+            <!-- Ensure job.id is passed from the view -->
+            <form id="jobEditForm" data-job-id="{{ job_id }}" onsubmit="handleJobUpdate(event)">
+                {{ form|crispy }}
+                <button type="submit" class="btn btn-primary">
+                    <span class="button-text">Update Job</span>
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{% static 'jobs/js/main.js' %}"></script>
+<script>
+    function handleJobUpdate(event) {
+        event.preventDefault();
+    
+        const form = event.target;
+        const jobId = form.getAttribute('data-job-id');
+        const url = `http://localhost:5000/api/job/${jobId}`;
+    
+        const submitButton = form.querySelector('button[type="submit"]');
+        const buttonText = submitButton.querySelector('.button-text');
+        const originalText = buttonText.innerHTML;
+    
+        buttonText.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Updating...';
+        submitButton.disabled = true;
+    
+        const payload = {
+            title: document.getElementById('id_title').value,
+            company_id: document.getElementById('id_company').value,
+            description: document.getElementById('id_description').value,
+            location: document.getElementById('id_location').value,
+            job_type: document.getElementById('id_job_type').value,
+            salary_range: document.getElementById('id_salary_range').value,
+            requirements: document.getElementById('id_requirements').value
+        };
+    
+        // First make an OPTIONS request
+        fetch(url, {
+            method: 'OPTIONS',
+            headers: {
+                'Access-Control-Request-Method': 'PUT',
+                'Access-Control-Request-Headers': 'Content-Type,Authorization,X-Requested-With',
+                'Origin': 'http://127.0.0.1:8000'
+            },
+            credentials: 'include'
+        })
+        .then(() => {
+            // Then make the PUT request
+            return fetch(url, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                    'X-Requested-With': 'XMLHttpRequest'
+                },
+                credentials: 'include',
+                body: JSON.stringify(payload)
+            });
+        })
+        .then(async response => {
+            const data = await response.json();
+            
+            if (!response.ok) {
+                throw new Error(data.error || `HTTP error! status: ${response.status}`);
+            }
+            return data;
+        })
+        .then(data => {
+            console.log("Update success:", data);
+            alert(data.message || "Job updated successfully!");
+            window.location.href = `/job/${jobId}`;
+        })
+        .catch(error => {
+            console.error("Error details:", error.message);
+            alert(`Failed to update job: ${error.message}`);
+        })
+        .finally(() => {
+            buttonText.innerHTML = originalText;
+            submitButton.disabled = false;
+        });
+    }
+
+</script>
+{% endblock %}

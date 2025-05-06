@@ -1,0 +1,92 @@
+{% extends "jobs/base.html" %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+<div class="post-job-page">
+    <h1 class="mb-4">Post a New Job</h1>
+    <div class="card">
+        <div class="card-body">
+            <form id="jobPostForm" onsubmit="handleJobSubmit(event)">
+                {{ form|crispy }}
+                <button type="submit" class="btn btn-primary">Post Job</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{% static 'jobs/js/main.js' %}"></script>
+<script>
+    const FLASK_API_URL = "http://localhost:5000/api/job";  // Update if port or endpoint changes
+
+    function handleJobSubmit(event) {
+        event.preventDefault();
+
+        const form = event.target;
+        const submitButton = form.querySelector('button[type="submit"]');
+        const originalText = submitButton.innerHTML;
+
+        submitButton.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Posting...';
+        submitButton.disabled = true;
+
+        // Get all values
+        const title = document.getElementById('id_title')?.value;
+        const company_id = document.getElementById('id_company')?.value;
+        const description = document.getElementById('id_description')?.value;
+        const location = document.getElementById('id_location')?.value;
+        const job_type = document.getElementById('id_job_type')?.value;
+        const salary_range = document.getElementById('id_salary_range')?.value;
+        const requirements = document.getElementById('id_requirements')?.value;
+
+        // Validate before sending
+        if (!title || !company_id || !description) {
+            alert("Please fill in all required fields.");
+            submitButton.innerHTML = originalText;
+            submitButton.disabled = false;
+            return;
+        }
+
+        const formData = {
+            title,
+            company_id,
+            description,
+            location,
+            job_type,
+            salary_range,
+            requirements
+        };
+
+        fetch(FLASK_API_URL, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+                // No CSRF or auth headers unless you're securing Flask
+            },
+            body: JSON.stringify(formData)
+        })
+        .then(response => {
+            console.log("Status:", response.status);
+            return response.json();
+        })
+        .then(data => {
+            console.log("Flask response:", data);
+            if (data.message === "Job posted successfully") {
+                alert("Job posted successfully!");
+                window.location.href = "{% url 'job_portal:index' %}";
+            } else {
+                alert("Failed to post job: " + (data.message || "Unknown error"));
+            }
+        })
+        .catch(error => {
+            console.error("Error during fetch:", error);
+            alert("Something went wrong. Check console for details.");
+        })
+        .finally(() => {
+            submitButton.innerHTML = originalText;
+            submitButton.disabled = false;
+        });
+    }
+</script>
+{% endblock %}

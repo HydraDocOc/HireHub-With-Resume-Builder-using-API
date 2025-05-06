@@ -1,0 +1,178 @@
+[
+  {
+    "model": "jobs.customuser",
+    "pk": 1,
+    "fields": {
+      "email": "admin@gmail.com",
+      "name": "Admin",
+      "mobile": "1234567890",
+      "role": "admin",
+      "is_active": true,
+      "is_staff": true,
+      "is_superuser": true,
+      "password": "pbkdf2_sha256$600000$7YJgYb3eKQJvN7V5PVxAUb$4TwNYsRpX51YUiWZS9zf1QWbwFQ56ySuv5Y1QwlcbC8=",
+      "date_joined": "2023-01-01T00:00:00.000Z"
+    }
+  },
+  {
+    "model": "jobs.company",
+    "pk": 1,
+    "fields": {
+      "name": "Flipkart",
+      "description": "e-commerce, logistics, and digital payments",
+      "logo_url": "https://brandlogos.net/wp-content/uploads/2020/11/flipkart-logo.png"
+    }
+  },
+  {
+    "model": "jobs.company",
+    "pk": 2,
+    "fields": {
+      "name": "Google",
+      "description": "search engines, cloud computing, and mobile apps",
+      "logo_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2f/Google_2015_logo.svg/800px-Google_2015_logo.svg.png"
+    }
+  },
+  {
+    "model": "jobs.company",
+    "pk": 3,
+    "fields": {
+      "name": "Microsoft",
+      "description": "software development, cloud computing, and gaming",
+      "logo_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/Microsoft_logo.svg/1200px-Microsoft_logo.svg.png"
+    }
+  },
+  {
+    "model": "jobs.company",
+    "pk": 4,
+    "fields": {
+      "name": "Amazon",
+      "description": "e-commerce, cloud computing, and artificial intelligence",
+      "logo_url": "https://i.pinimg.com/originals/01/ca/da/01cada77a0a7d326d85b7969fe26a728.jpg"
+    }
+  },
+  {
+    "model": "jobs.company",
+    "pk": 5,
+    "fields": {
+      "name": "Apple",
+      "description": "consumer electronics, software development, and digital services",
+      "logo_url": "https://cdn.pixabay.com/photo/2018/05/08/21/08/apple-3383931_1280.png"
+    }
+  },
+  {
+    "model": "jobs.company",
+    "pk": 6,
+    "fields": {
+      "name": "Meta",
+      "description": "social media, virtual reality, and artificial intelligence",
+      "logo_url": "https://brandlogos.net/wp-content/uploads/2021/10/meta-logo.png"
+    }
+  },
+  {
+    "model": "jobs.company",
+    "pk": 7,
+    "fields": {
+      "name": "Tesla",
+      "description": "electric vehicles, renewable energy, and autonomous driving",
+      "logo_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e8/Tesla_logo.png/640px-Tesla_logo.png"
+    }
+  },
+  {
+    "model": "jobs.job",
+    "pk": 1,
+    "fields": {
+      "title": "Business Analyst",
+      "company": 1,
+      "description": "Analyze business processes, gather requirements, develop and implement data-driven solutions, and collaborate with stakeholders to improve operations.",
+      "location": "Bangalore, Karnataka",
+      "salary_range": "₹10,00,000 - ₹14,00,000",
+      "job_type": "Full-time",
+      "requirements": "Bachelor's degree in Business Administration or related field, 2+ years of experience in business analysis, strong skills in Excel and SQL.",
+      "posted_date": "2023-01-15T00:00:00.000Z"
+    }
+  },
+  {
+    "model": "jobs.job",
+    "pk": 2,
+    "fields": {
+      "title": "Software Engineer",
+      "company": 2,
+      "description": "Design, develop, and maintain software applications, work on cutting-edge technology projects, and collaborate with cross-functional teams to deliver high-quality solutions.",
+      "location": "Bangalore, Karnataka",
+      "salary_range": "₹15,00,000 - ₹20,00,000",
+      "job_type": "Full-time",
+      "requirements": "Bachelor's degree in Computer Science or related field, 3+ years of experience in software development, proficiency in Python and Java.",
+      "posted_date": "2023-01-20T00:00:00.000Z"
+    }
+  },
+  {
+    "model": "jobs.job",
+    "pk": 3,
+    "fields": {
+      "title": "Software Engineer",
+      "company": 3,
+      "description": "Develop and maintain software applications, collaborate with cross-functional teams, and ensure high performance and responsiveness of applications.",
+      "location": "Hyderabad, Telangana",
+      "salary_range": "₹10,00,000 - ₹15,00,000",
+      "job_type": "Full-time",
+      "requirements": "Bachelor's degree in Computer Science or related field, 3+ years of experience in software development, proficiency in C# and .NET framework.",
+      "posted_date": "2023-01-25T00:00:00.000Z"
+    }
+  },
+  {
+    "model": "jobs.job",
+    "pk": 4,
+    "fields": {
+      "title": "Data Scientist",
+      "company": 4,
+      "description": "Analyze large datasets to extract meaningful insights, develop predictive models, and support data-driven decision-making processes.",
+      "location": "Bengaluru, Karnataka",
+      "salary_range": "₹12,00,000 - ₹16,00,000",
+      "job_type": "Full-time",
+      "requirements": "Master's degree in Data Science or related field, 2+ years of experience in data analysis, strong skills in Python and SQL.",
+      "posted_date": "2023-02-01T00:00:00.000Z"
+    }
+  },
+  {
+    "model": "jobs.job",
+    "pk": 5,
+    "fields": {
+      "title": "Product Manager",
+      "company": 5,
+      "description": "Lead product development from concept to launch, define product vision and strategy, and work closely with engineering, design, and marketing teams.",
+      "location": "Bengaluru, Karnataka",
+      "salary_range": "₹13,00,000 - ₹17,00,000",
+      "job_type": "Full-time",
+      "requirements": "MBA or equivalent experience, 5+ years of experience in product management, excellent communication and leadership skills.",
+      "posted_date": "2023-02-05T00:00:00.000Z"
+    }
+  },
+  {
+    "model": "jobs.job",
+    "pk": 6,
+    "fields": {
+      "title": "UX Designer",
+      "company": 6,
+      "description": "Create user-centered designs, conduct user research and usability testing, and collaborate with product and engineering teams to enhance user experience.",
+      "location": "Gurgaon, Haryana",
+      "salary_range": "₹11,00,000 - ₹14,00,000",
+      "job_type": "Full-time",
+      "requirements": "Bachelor's degree in Design or related field, 2+ years of experience in UX design, strong portfolio showcasing design skills.",
+      "posted_date": "2023-02-10T00:00:00.000Z"
+    }
+  },
+  {
+    "model": "jobs.job",
+    "pk": 7,
+    "fields": {
+      "title": "Mechanical Engineer",
+      "company": 7,
+      "description": "Design and develop mechanical systems and components, conduct testing and validation, and collaborate with manufacturing teams to ensure product quality.",
+      "location": "Pune, Maharashtra",
+      "salary_range": "₹9,00,000 - ₹13,00,000",
+      "job_type": "Full-time",
+      "requirements": "Bachelor's degree in Mechanical Engineering, 3+ years of experience in mechanical design, proficiency in CAD software.",
+      "posted_date": "2023-02-15T00:00:00.000Z"
+    }
+  }
+]

@@ -1,0 +1,87 @@
+
+{% extends 'resume_builder/generic_formset.html' %}
+{% load static %}
+
+{% block title %}Edit Certificates - Resume Builder{% endblock %}
+
+{% block form_fields %}
+<div class="row">
+    <div class="col-md-6 mb-3">
+        <label for="{{ form.name.id_for_label }}" class="form-label">Certificate Name</label>
+        {{ form.name.errors }}
+        {{ form.name }}
+    </div>
+    <div class="col-md-6 mb-3">
+        <label for="{{ form.issuing_organization.id_for_label }}" class="form-label">Issuing Organization</label>
+        {{ form.issuing_organization.errors }}
+        {{ form.issuing_organization }}
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-6 mb-3">
+        <label for="{{ form.date_obtained.id_for_label }}" class="form-label">Date Obtained</label>
+        {{ form.date_obtained.errors }}
+        {{ form.date_obtained }}
+    </div>
+    <div class="col-md-6 mb-3">
+        <label for="{{ form.expiration_date.id_for_label }}" class="form-label">Expiration Date (Optional)</label>
+        {{ form.expiration_date.errors }}
+        {{ form.expiration_date }}
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-6 mb-3">
+        <label for="{{ form.credential_id.id_for_label }}" class="form-label">Credential ID (Optional)</label>
+        {{ form.credential_id.errors }}
+        {{ form.credential_id }}
+    </div>
+    <div class="col-md-6 mb-3">
+        <label for="{{ form.credential_url.id_for_label }}" class="form-label">Credential URL (Optional)</label>
+        {{ form.credential_url.errors }}
+        {{ form.credential_url }}
+    </div>
+</div>
+{% endblock %}
+
+{% block empty_form_fields %}
+<div class="row">
+    <div class="col-md-6 mb-3">
+        <label for="{{ formset.empty_form.name.id_for_label }}" class="form-label">Certificate Name</label>
+        {{ formset.empty_form.name.errors }}
+        {{ formset.empty_form.name }}
+    </div>
+    <div class="col-md-6 mb-3">
+        <label for="{{ formset.empty_form.issuing_organization.id_for_label }}" class="form-label">Issuing Organization</label>
+        {{ formset.empty_form.issuing_organization.errors }}
+        {{ formset.empty_form.issuing_organization }}
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-6 mb-3">
+        <label for="{{ formset.empty_form.date_obtained.id_for_label }}" class="form-label">Date Obtained</label>
+        {{ formset.empty_form.date_obtained.errors }}
+        {{ formset.empty_form.date_obtained }}
+    </div>
+    <div class="col-md-6 mb-3">
+        <label for="{{ formset.empty_form.expiration_date.id_for_label }}" class="form-label">Expiration Date (Optional)</label>
+        {{ formset.empty_form.expiration_date.errors }}
+        {{ formset.empty_form.expiration_date }}
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-6 mb-3">
+        <label for="{{ formset.empty_form.credential_id.id_for_label }}" class="form-label">Credential ID (Optional)</label>
+        {{ formset.empty_form.credential_id.errors }}
+        {{ formset.empty_form.credential_id }}
+    </div>
+    <div class="col-md-6 mb-3">
+        <label for="{{ formset.empty_form.credential_url.id_for_label }}" class="form-label">Credential URL (Optional)</label>
+        {{ formset.empty_form.credential_url.errors }}
+        {{ formset.empty_form.credential_url }}
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,12 @@
+"""
+URL configuration for hirehub project.
+"""
+
+from django.contrib import admin
+from django.urls import path, include
+
+urlpatterns = [
+    path('admin/', admin.site.urls),
+    path('', include('job_portal.urls')),
+    path('resume/', include('resume_builder.urls')),
+]

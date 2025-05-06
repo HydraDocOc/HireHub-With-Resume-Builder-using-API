@@ -1,0 +1,135 @@
+{% extends 'resume_builder/base.html' %}
+{% load static %}
+
+{% block title %}Create Resume - Resume Builder{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-md-12">
+        <h1 class="mb-3">Create New Resume</h1>
+        <p class="text-muted">Let's start building your professional resume</p>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-8 mx-auto">
+        <div class="card">
+            <div class="card-header bg-primary text-white">
+                <h5 class="mb-0">Resume Details</h5>
+            </div>
+            <div class="card-body">
+                <form method="post" id="resumeForm">
+                    {% csrf_token %}
+                    
+                    <div class="mb-3">
+                        <label for="{{ form.title.id_for_label }}" class="form-label">Resume Title</label>
+                        {{ form.title.errors }}
+                        <input type="text" name="{{ form.title.name }}" id="{{ form.title.id_for_label }}" class="form-control" placeholder="e.g., Software Developer Resume" required>
+                        <div class="form-text">Give your resume a name to help you identify it later.</div>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <label for="{{ form.template.id_for_label }}" class="form-label">Resume Template</label>
+                        {{ form.template.errors }}
+                        <select name="{{ form.template.name }}" id="{{ form.template.id_for_label }}" class="form-select">
+                            {% for value, text in form.template.field.choices %}
+                            <option value="{{ value }}">{{ text }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    
+                    <div class="container">
+                        <h3>Template Preview</h3>
+                        <div class="row mt-3">
+                            <div class="col-md-4 mb-3">
+                                <div class="card template-card" data-template="classic">
+                                    <div class="card-body text-center">
+                                        <img src="{% static 'resume_builder/img/templates_classic.png' %}" alt="Classic Template" class="img-fluid template-preview">
+                                        <h5 class="mt-2">Classic</h5>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <div class="card template-card" data-template="modern">
+                                    <div class="card-body text-center">
+                                        <img src="{% static 'resume_builder/img/templates_modern.png' %}" alt="Modern Template" class="img-fluid template-preview">
+                                        <h5 class="mt-2">Modern</h5>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <div class="card template-card" data-template="professional">
+                                    <div class="card-body text-center">
+                                        <img src="{% static 'resume_builder/img/templates_professional.png' %}" alt="Professional Template" class="img-fluid template-preview">
+                                        <h5 class="mt-2">Professional</h5>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4 offset-md-2 mb-3">
+                                <div class="card template-card" data-template="minimalist">
+                                    <div class="card-body text-center">
+                                        <img src="{% static 'resume_builder/img/templates_minimalist.png' %}" alt="Minimalist Template" class="img-fluid template-preview">
+                                        <h5 class="mt-2">Minimalist</h5>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <div class="card template-card" data-template="creative">
+                                    <div class="card-body text-center">
+                                        <img src="{% static 'resume_builder/img/templates_creative.png' %}" alt="Creative Template" class="img-fluid template-preview">
+                                        <h5 class="mt-2">Creative</h5>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-primary">Create Resume</button>
+                        <a href="{% url 'resume_builder:dashboard' %}" class="btn btn-outline-secondary">Cancel</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const templateSelect = document.getElementById('{{ form.template.id_for_label }}');
+        const templateCards = document.querySelectorAll('.template-card');
+        
+        // Highlight the selected template
+        function highlightSelectedTemplate() {
+            const selectedValue = templateSelect.value;
+            templateCards.forEach(card => {
+                if (card.dataset.template === selectedValue) {
+                    card.classList.add('border-primary');
+                    card.classList.add('shadow');
+                } else {
+                    card.classList.remove('border-primary');
+                    card.classList.remove('shadow');
+                }
+            });
+        }
+        
+        // Initialize
+        highlightSelectedTemplate();
+        
+        // Update when select changes
+        templateSelect.addEventListener('change', highlightSelectedTemplate);
+        
+        // Update select when template card is clicked
+        templateCards.forEach(card => {
+            card.addEventListener('click', function() {
+                templateSelect.value = card.dataset.template;
+                highlightSelectedTemplate();
+            });
+        });
+    });
+</script>
+{% endblock %}

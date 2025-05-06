@@ -1,0 +1,78 @@
+{% extends "jobs/base.html" %}
+{% load static %}  <!-- Add this to use static files -->
+{% load crispy_forms_tags %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>Add New Company</h2>
+    <div class="card">
+        <div class="card-body">
+            <form id="companyForm">
+                {% csrf_token %}  <!-- Important for Django security -->
+                <div class="mb-3">
+                    {{ form.name|as_crispy_field }}  <!-- Using crispy forms -->
+                </div>
+                <div class="mb-3">
+                    {{ form.logo_url|as_crispy_field }}
+                    <small class="text-muted">Must be a full URL (https://example.com/logo.png)</small>
+                </div>
+                <div class="mb-3">
+                    {{ form.description|as_crispy_field }}
+                </div>
+                <button type="submit" class="btn btn-primary">Add Company</button>
+                <a href="{% url 'job_portal:list_companies' %}" class="btn btn-secondary">Cancel</a>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+document.getElementById('companyForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    // Get form data
+    const formData = {
+        name: document.querySelector('[name="name"]').value,
+        logo_url: document.querySelector('[name="logo_url"]').value,
+        description: document.querySelector('[name="description"]').value
+    };
+
+    // Get CSRF token for Django
+    const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+    
+    // Show loading state
+    const submitBtn = document.querySelector('button[type="submit"]');
+    submitBtn.disabled = true;
+    submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Adding...';
+
+    fetch('{{ FLASK_API_BASE }}/company', {  <!-- Use Django template variable -->
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value,
+            'X-Requested-With': 'XMLHttpRequest'
+        },
+        credentials: 'include',  <!-- Important for cookies/session -->
+        body: JSON.stringify(formData)
+    })
+    .then(response => {
+        if (!response.ok) {
+            return response.json().then(err => { throw new Error(err.error || 'Failed to add company'); });
+        }
+        return response.json();
+    })
+    .then(data => {
+        alert('Company added successfully!');
+        window.location.href = "{% url 'job_portal:list_companies' %}";
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert(error.message || 'Error adding company');
+    })
+    .finally(() => {
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Add Company';
+    });
+});
+</script>
+{% endblock %}

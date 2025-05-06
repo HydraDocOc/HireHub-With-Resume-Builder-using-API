@@ -1,0 +1,82 @@
+<html lang="en" data-bs-theme="light">
+{% extends 'resume_builder/base.html' %}
+{% load static %}
+
+{% block title %}Preview Resume - {{ resume.title }}{% endblock %}
+
+{% block content %}
+<div class="preview-container mb-5">
+    {% include 'resume_builder/resume_templates/'|add:resume.template|add:'.html' with resume=resume %}
+</div>
+<!-- Floating navigation buttons -->
+<div class="preview-nav-buttons print-hide">
+    <a href="{% url 'resume_builder:dashboard' %}" class="btn btn-primary">
+        <i class="fas fa-arrow-left"></i> Back to Dashboard
+    </a>
+    
+    <a href="{% url 'resume_builder:edit_personal_info' pk=resume.pk %}" class="btn btn-secondary">
+        <i class="fas fa-edit"></i> Edit Resume
+    </a>
+    
+    <a href="{% url 'resume_builder:download_resume' pk=resume.pk %}" class="btn btn-success">
+        <i class="fas fa-download"></i> Download PDF
+    </a>
+</div>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+    /* Hide navigation buttons when printing */
+    @media print {
+        .print-hide {
+            display: none !important;
+        }
+        
+        body {
+            padding: 0;
+            margin: 0;
+        }
+        
+        .preview-container {
+            box-shadow: none;
+            margin: 0;
+            padding: 0;
+        }
+    }
+    
+    .preview-nav-buttons {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        display: flex;
+        flex-direction: column;
+        z-index: 1000;
+    }
+    
+    .preview-nav-buttons .btn {
+        margin-bottom: 10px;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        min-width: 200px;
+        text-align: left;
+    }
+</style>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Add print button functionality
+    document.addEventListener('DOMContentLoaded', function() {
+        const printBtn = document.createElement('button');
+        printBtn.classList.add('btn', 'btn-info', 'print-hide');
+        printBtn.innerHTML = '<i class="fas fa-print"></i> Print Resume';
+        
+        printBtn.addEventListener('click', function() {
+            window.print();
+        });
+        
+        // Insert before the first button
+        const navButtons = document.querySelector('.preview-nav-buttons');
+        navButtons.insertBefore(printBtn, navButtons.firstChild);
+    });
+</script>
+{% endblock %}
