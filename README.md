@@ -42,7 +42,7 @@
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/dikshaggarwal/HireHub-With-Resume-Builder-using-API.git
+git clone https://github.com/HydraDocOc/HireHub-With-Resume-Builder-using-API.git
 cd HireHub-With-Resume-Builder-using-API
 ```
 
@@ -97,6 +97,20 @@ Ensure your Flask backend is also running at its default port (5000) for the API
 - More customizable resume templates
 - Push/email notifications for job matches
 - Dockerize the architecture for easier deployment
+
+---
+
+## 🚀📦✅🧑‍💻📤 Deployment
+- Platform Used :- Pythonanywhere.com 
+- Frontend (Django) Deployment link
+  ```bash
+  https:\\sanchal.pythonanywhere.com
+  ```
+- Backend (Flask) Deployment Link
+  ```bash
+  https:\\dhawalgoyal.pythonanywhere.com
+  ```
+- To Check Flask-Api use ```\api``` after the backend link and then access data . Ex:  ```https:\\dhawalgoyal.pythonanywhere.com\api\job\1 ```
 
 ---
 
