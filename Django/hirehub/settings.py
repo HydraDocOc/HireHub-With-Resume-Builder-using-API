@@ -226,5 +226,5 @@ REST_FRAMEWORK = {
 
 FLASK_API_BASE = os.environ.get(
     "FLASK_API_BASE",
-    "https://hirehub-with-resume-builder-using-api-1.onrender.com"
+    "https://hirehub-with-resume-builder-using-api-1.onrender.com/api"
 )
