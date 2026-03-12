@@ -22,15 +22,7 @@ db = SQLAlchemy(model_class=Base)
 app = Flask(__name__)
 
 # Enable CORS
-CORS(app, resources={
-    r"/api/*": {
-        "origins": ["http://127.0.0.1:8000"],
-        "methods": ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-        "allow_headers": ["Content-Type", "Authorization","X-CSRFToken", "X-Requested-With"],
-        "supports_credentials": True,
-        "expose_headers": ["Content-Type"]
-    }
-})
+CORS(app, resources={r"/api/*": {"origins": "*"}})
 
 
 # Configuration
